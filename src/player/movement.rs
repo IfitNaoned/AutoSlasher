@@ -4,9 +4,11 @@ use strum_macros::*;
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
-        app.add_plugin(InputManagerPlugin::<Action>::default())
-            //.add_system_set(SystemSet::on_update(GameState::Play).with_system(movement))
-            ;
+        app.add_plugins(MinimalPlugins)
+            .add_plugin(InputManagerPlugin::<Action>::default())
+        //.add_system_set(SystemSet::on_update(GameState::Play).with_system(movement))
+        //.add_system(movement)
+        ;
     }
 }
 
