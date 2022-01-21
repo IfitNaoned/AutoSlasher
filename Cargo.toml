@@ -1,0 +1,20 @@
+[package]
+name = "auto_slasher"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bevy = "0.6"
+petitset = "0.1.0"
+strum = "0.23"
+strum_macros = "0.23"
+leafwing-input-manager= { git = "https://github.com/Leafwing-Studios/leafwing-input-manager" } 
+
+
+#plugins not ready for 0.6
+#bevy_config_cam= { git = "https://github.com/BlackPhlox/bevy_config_cam", branch = "0.6" } 
+
+[workspace]
+resolver = "2"
