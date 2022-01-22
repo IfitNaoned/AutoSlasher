@@ -1,11 +1,20 @@
 use crate::game_state::*;
-use crate::player::movement::*;
 use bevy::prelude::*;
 use leafwing_input_manager::prelude::*;
+use strum_macros::*;
 
 static PLAYER_SIZE: isize = 1;
 
 pub mod movement;
+
+#[derive(Actionlike, PartialEq, Eq, Clone, Copy, Hash, Debug, EnumIter)]
+pub enum Action {
+    // Movement
+    Up,
+    Down,
+    Left,
+    Right,
+}
 
 #[derive(Component)]
 pub struct Player;
@@ -44,22 +53,19 @@ fn spawn(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    commands
-        .spawn_bundle(PlayerBundle {
-            player: Player,
-            input_manager: InputManagerBundle {
-                input_map: PlayerBundle::default_input_map(),
-                action_state: ActionState::default(),
-            },
-            pbr: PbrBundle {
-                mesh: meshes.add(Mesh::from(shape::Cube {
-                    size: PLAYER_SIZE as f32,
-                })),
-                material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-                transform: Transform::from_xyz(0., PLAYER_SIZE as f32 / 2., 0.),
-                ..Default::default()
-            },
-        })
-        .insert(Player)
-        .insert_bundle(InputManagerBundle::<Action>::default());
+    commands.spawn_bundle(PlayerBundle {
+        player: Player,
+        input_manager: InputManagerBundle {
+            input_map: PlayerBundle::default_input_map(),
+            action_state: ActionState::default(),
+        },
+        pbr: PbrBundle {
+            mesh: meshes.add(Mesh::from(shape::Cube {
+                size: PLAYER_SIZE as f32,
+            })),
+            material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+            transform: Transform::from_xyz(0., PLAYER_SIZE as f32 / 2., 0.),
+            ..Default::default()
+        },
+    });
 }

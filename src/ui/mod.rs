@@ -32,7 +32,7 @@ fn spawn_ui(mut commands: Commands) {
                         flex_direction: FlexDirection::ColumnReverse,
                         ..Default::default()
                     },
-                    color: Color::NONE.into(),
+                    color: Color::BLACK.into(),
                     ..Default::default()
                 })
                 .with_children(|parent| {
