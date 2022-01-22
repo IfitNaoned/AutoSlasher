@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(Windows) Lancer",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/target/debug/auto_slasher.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "CARGO_MANIFEST_DIR",
+                    "value": "${workspaceFolder}"
+                }
+            ],
+            "console": "externalTerminal",
+            "preLaunchTask": "${defaultBuildTask}"
+        }
+    ],
+}
