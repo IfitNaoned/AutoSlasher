@@ -1,7 +1,7 @@
 use crate::game_state::*;
 use bevy::prelude::*;
 
-static MAP_SIZE: isize = 100;
+pub static MAP_SIZE: isize = 100;
 
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {

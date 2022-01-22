@@ -2,6 +2,7 @@ use crate::game_state::*;
 use bevy::prelude::*;
 
 mod camera;
+mod enemies;
 mod game_state;
 mod map;
 mod player;
@@ -16,13 +17,16 @@ fn main() {
             brightness: 0.2,
         })
         .add_plugins(DefaultPlugins)
-        // Init
+        //debug plugins
+        // init
         .add_state(GameState::Setup)
         // Game plugins
         .add_plugin(camera::Plugin)
         .add_plugin(ui::Plugin)
         .add_plugin(player::Plugin)
         .add_plugin(player::movement::Plugin)
+        .add_plugin(enemies::Plugin)
+        .add_plugin(enemies::movement::Plugin)
         .add_plugin(map::Plugin)
         .run();
 }

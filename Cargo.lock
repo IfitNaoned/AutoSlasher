@@ -161,6 +161,7 @@ dependencies = [
  "bevy",
  "leafwing-input-manager",
  "petitset",
+ "rand",
  "strum",
  "strum_macros",
 ]
