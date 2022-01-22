@@ -8,22 +8,25 @@ impl bevy::prelude::Plugin for Plugin {
     }
 }
 
-fn movement(mut query: Query<(&ActionState<Action>, &mut Transform), With<Player>>) {
+fn movement(
+    time: Res<Time>,
+    mut query: Query<(&ActionState<Action>, &mut Transform), With<Player>>,
+) {
     let (action_state, mut transform) = query.single_mut();
 
     if action_state.pressed(Action::Down) {
-        transform.translation.z += 1.;
+        transform.translation.z += PLAYER_SPEED * time.delta_seconds();
     }
 
     if action_state.pressed(Action::Up) {
-        transform.translation.z -= 1.;
+        transform.translation.z -= PLAYER_SPEED * time.delta_seconds();
     }
 
     if action_state.pressed(Action::Left) {
-        transform.translation.x -= 1.;
+        transform.translation.x -= PLAYER_SPEED * time.delta_seconds();
     }
 
     if action_state.pressed(Action::Right) {
-        transform.translation.x += 1.;
+        transform.translation.x += PLAYER_SPEED * time.delta_seconds();
     }
 }

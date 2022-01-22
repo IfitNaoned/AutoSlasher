@@ -50,22 +50,25 @@ fn setup_camera(mut commands: Commands) {
     });
 }
 
-fn movement(mut query: Query<(&ActionState<Action>, &mut Transform), With<MainCamera>>) {
+fn movement(
+    time: Res<Time>,
+    mut query: Query<(&ActionState<Action>, &mut Transform), With<MainCamera>>,
+) {
     let (action_state, mut transform) = query.single_mut();
 
     if action_state.pressed(Action::Down) {
-        transform.translation.z += 1.;
+        transform.translation.z += PLAYER_SPEED * time.delta_seconds();
     }
 
     if action_state.pressed(Action::Up) {
-        transform.translation.z -= 1.;
+        transform.translation.z -= PLAYER_SPEED * time.delta_seconds();
     }
 
     if action_state.pressed(Action::Left) {
-        transform.translation.x -= 1.;
+        transform.translation.x -= PLAYER_SPEED * time.delta_seconds();
     }
 
     if action_state.pressed(Action::Right) {
-        transform.translation.x += 1.;
+        transform.translation.x += PLAYER_SPEED * time.delta_seconds();
     }
 }

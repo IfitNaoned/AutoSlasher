@@ -4,6 +4,7 @@ use leafwing_input_manager::prelude::*;
 use strum_macros::*;
 
 static PLAYER_SIZE: isize = 1;
+pub static PLAYER_SPEED: f32 = 10.;
 
 pub mod movement;
 

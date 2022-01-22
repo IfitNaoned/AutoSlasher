@@ -2,6 +2,8 @@ use crate::enemies::*;
 
 use crate::player::*;
 
+pub static ENEMY_SPEED: f32 = 8.;
+
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
@@ -17,7 +19,8 @@ fn movement(
     if let Ok(player_transform) = query_player.get_single() {
         enemies.for_each_mut(|mut enemy_transform| {
             let d = player_transform.translation - enemy_transform.translation;
-            enemy_transform.translation += 10.0 * time.delta_seconds() * d.normalize_or_zero();
+            enemy_transform.translation +=
+                ENEMY_SPEED * time.delta_seconds() * d.normalize_or_zero();
         });
     }
 }
