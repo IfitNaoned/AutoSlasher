@@ -1,10 +1,12 @@
 use crate::game_state::*;
 use bevy::prelude::*;
+use heron::prelude::*;
 use leafwing_input_manager::prelude::*;
 use strum_macros::*;
 
 static PLAYER_SIZE: isize = 1;
-pub static PLAYER_SPEED: f32 = 10.;
+static PLAYER_COLLISION_SIZE: f32 = PLAYER_SIZE as f32 / 2.;
+pub static PLAYER_SPEED: f32 = 1.;
 
 pub mod movement;
 
@@ -18,11 +20,15 @@ pub enum Action {
 }
 
 #[derive(Component)]
+struct LifePoint(u32);
+
+#[derive(Component)]
 pub struct Player;
 
 #[derive(Bundle)]
 struct PlayerBundle {
     player: Player,
+    life: LifePoint,
     #[bundle]
     input_manager: InputManagerBundle<Action>,
     #[bundle]
@@ -54,19 +60,26 @@ fn spawn(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    commands.spawn_bundle(PlayerBundle {
-        player: Player,
-        input_manager: InputManagerBundle {
-            input_map: PlayerBundle::default_input_map(),
-            action_state: ActionState::default(),
-        },
-        pbr: PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Cube {
-                size: PLAYER_SIZE as f32,
-            })),
-            material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-            transform: Transform::from_xyz(0., PLAYER_SIZE as f32 / 2., 0.),
-            ..Default::default()
-        },
-    });
+    commands
+        .spawn_bundle(PlayerBundle {
+            player: Player,
+            life: LifePoint(100),
+            input_manager: InputManagerBundle {
+                input_map: PlayerBundle::default_input_map(),
+                action_state: ActionState::default(),
+            },
+            pbr: PbrBundle {
+                mesh: meshes.add(Mesh::from(shape::Cube {
+                    size: PLAYER_SIZE as f32,
+                })),
+                material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+                transform: Transform::from_xyz(0., PLAYER_SIZE as f32 / 2., 0.),
+                ..Default::default()
+            },
+        })
+        .insert(RigidBody::KinematicPositionBased)
+        .insert(CollisionShape::Cuboid {
+            half_extends: Vec3::splat(PLAYER_COLLISION_SIZE),
+            border_radius: None,
+        });
 }

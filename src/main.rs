@@ -1,5 +1,6 @@
 use crate::game_state::*;
 use bevy::prelude::*;
+use heron::prelude::*;
 
 mod camera;
 mod enemies;
@@ -20,6 +21,7 @@ fn main() {
         //debug plugins
         // init
         .add_state(GameState::Setup)
+        .add_plugin(PhysicsPlugin::default())
         // Game plugins
         .add_plugin(camera::Plugin)
         .add_plugin(ui::Plugin)

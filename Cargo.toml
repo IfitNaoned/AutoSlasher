@@ -12,6 +12,7 @@ strum = "0.23"
 strum_macros = "0.23"
 leafwing-input-manager= { git = "https://github.com/Leafwing-Studios/leafwing-input-manager" } 
 rand = "0.8.4"
+heron = { version = "1.0.1", features = ["3d"] }
 
 #plugins not ready for 0.6
 #bevy_config_cam= { git = "https://github.com/BlackPhlox/bevy_config_cam", branch = "0.6" } 

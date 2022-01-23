@@ -2,6 +2,7 @@ use crate::game_state::*;
 use crate::map::*;
 use bevy::core::FixedTimestep;
 use bevy::prelude::*;
+use heron::prelude::*;
 use rand::prelude::*;
 
 static ENEMY_SIZE: isize = 1;
@@ -37,18 +38,23 @@ fn spawn(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    commands.spawn_bundle(EnemyBundle {
-        enemy: Enemy,
-        pbr: PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Icosphere {
-                radius: ENEMY_SIZE as f32,
-                subdivisions: 48,
-            })),
-            material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-            transform: EnemyBundle::get_random_spawn_position(),
-            ..Default::default()
-        },
-    });
+    commands
+        .spawn_bundle(EnemyBundle {
+            enemy: Enemy,
+            pbr: PbrBundle {
+                mesh: meshes.add(Mesh::from(shape::Icosphere {
+                    radius: ENEMY_SIZE as f32,
+                    subdivisions: 48,
+                })),
+                material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
+                transform: EnemyBundle::get_random_spawn_position(),
+                ..Default::default()
+            },
+        })
+        .insert(RigidBody::Dynamic)
+        .insert(CollisionShape::Sphere {
+            radius: ENEMY_SIZE as f32,
+        });
 }
 
 impl EnemyBundle {
