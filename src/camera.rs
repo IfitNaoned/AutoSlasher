@@ -19,7 +19,9 @@ pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(setup_camera))
-            .add_system_set(SystemSet::on_update(GameState::Play).with_system(movement));
+            .add_system_set(SystemSet::on_update(GameState::Play).with_system(track_player))
+            .add_system_set(SystemSet::on_update(GameState::Play).with_system(update_camera))
+            .add_event::<PlayerCameraEvent>();
     }
 }
 
@@ -50,25 +52,28 @@ fn setup_camera(mut commands: Commands) {
     });
 }
 
-fn movement(
-    time: Res<Time>,
-    mut query: Query<(&ActionState<Action>, &mut Transform), With<MainCamera>>,
+struct PlayerCameraEvent(Vec3);
+
+fn track_player(
+    mut events: EventWriter<PlayerCameraEvent>,
+    query: Query<&Transform, With<Player>>,
 ) {
-    let (action_state, mut transform) = query.single_mut();
+    let player_transform = query.single();
+    events.send(PlayerCameraEvent(player_transform.translation));
+}
 
-    if action_state.pressed(Action::Down) {
-        transform.translation.z += PLAYER_SPEED * time.delta_seconds();
-    }
-
-    if action_state.pressed(Action::Up) {
-        transform.translation.z -= PLAYER_SPEED * time.delta_seconds();
-    }
-
-    if action_state.pressed(Action::Left) {
-        transform.translation.x -= PLAYER_SPEED * time.delta_seconds();
-    }
-
-    if action_state.pressed(Action::Right) {
-        transform.translation.x += PLAYER_SPEED * time.delta_seconds();
+fn update_camera(
+    mut events: EventReader<PlayerCameraEvent>,
+    mut query: Query<&mut Transform, With<MainCamera>>,
+) {
+    for event in events.iter() {
+        match event {
+            PlayerCameraEvent(translation) => {
+                if let Ok(mut transform) = query.get_single_mut() {
+                    transform.translation = *translation + Vec3::new(0.0, 50.0, 10.0);
+                    transform.look_at(*translation, Vec3::Y);
+                }
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ use strum_macros::*;
 
 static PLAYER_SIZE: isize = 1;
 static PLAYER_COLLISION_SIZE: f32 = PLAYER_SIZE as f32 / 2.;
-pub static PLAYER_SPEED: f32 = 1.;
+pub static PLAYER_SPEED: f32 = 10.;
 
 pub mod movement;
 
@@ -77,7 +77,8 @@ fn spawn(
                 ..Default::default()
             },
         })
-        .insert(RigidBody::KinematicPositionBased)
+        .insert(Velocity::default())
+        .insert(RigidBody::Dynamic)
         .insert(CollisionShape::Cuboid {
             half_extends: Vec3::splat(PLAYER_COLLISION_SIZE),
             border_radius: None,
