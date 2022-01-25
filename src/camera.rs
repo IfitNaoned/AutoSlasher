@@ -46,7 +46,7 @@ fn setup_camera(mut commands: Commands) {
             action_state: ActionState::default(),
         },
         pbr: PerspectiveCameraBundle {
-            transform: Transform::from_xyz(0.0, 50.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
+            transform: Transform::from_xyz(0.0, 30.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
             ..Default::default()
         },
     });
@@ -70,7 +70,7 @@ fn update_camera(
         match event {
             PlayerCameraEvent(translation) => {
                 if let Ok(mut transform) = query.get_single_mut() {
-                    transform.translation = *translation + Vec3::new(0.0, 50.0, 10.0);
+                    transform.translation = *translation + Vec3::new(0.0, 30.0, 10.0);
                     transform.look_at(*translation, Vec3::Y);
                 }
             }

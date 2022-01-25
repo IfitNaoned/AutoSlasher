@@ -1,5 +1,4 @@
 use crate::enemies::*;
-
 use crate::player::*;
 
 pub static ENEMY_SPEED: f32 = 8.;

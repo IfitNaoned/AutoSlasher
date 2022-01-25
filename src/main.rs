@@ -6,6 +6,7 @@ mod camera;
 mod enemies;
 mod game_state;
 mod map;
+mod physics;
 mod player;
 mod ui;
 

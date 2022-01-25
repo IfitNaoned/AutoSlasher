@@ -1,5 +1,6 @@
 use crate::game_state::*;
 use crate::map::*;
+use crate::physics::*;
 use bevy::core::FixedTimestep;
 use bevy::prelude::*;
 use heron::prelude::*;
@@ -7,7 +8,7 @@ use rand::prelude::*;
 
 static ENEMY_SIZE: isize = 1;
 const ENEMY_SPAWN_TIME_STEP: f64 = 30.0 / 60.0;
-pub static ENEMY_MAX_POSITION: isize = MAP_SIZE / 2;
+pub static ENEMY_MAX_POSITION: isize = (MAP_SIZE / 2) - ENEMY_SIZE;
 pub static ENEMY_MIN_POSITION: isize = -ENEMY_MAX_POSITION;
 
 pub mod movement;
@@ -62,7 +63,14 @@ fn spawn(
         .insert(RigidBody::Dynamic)
         .insert(CollisionShape::Sphere {
             radius: ENEMY_SIZE as f32,
-        });
+        })
+        .insert(
+            CollisionLayers::none()
+                .with_group(Layer::Enemies)
+                .with_mask(Layer::Enemies)
+                .with_mask(Layer::Player)
+                .with_mask(Layer::World),
+        );
 }
 
 impl EnemyBundle {

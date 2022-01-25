@@ -1,4 +1,5 @@
 use crate::game_state::*;
+use crate::physics::*;
 use bevy::prelude::*;
 use heron::prelude::*;
 use leafwing_input_manager::prelude::*;
@@ -90,5 +91,11 @@ fn spawn(
         .insert(CollisionShape::Cuboid {
             half_extends: Vec3::splat(PLAYER_COLLISION_SIZE),
             border_radius: None,
-        });
+        })
+        .insert(
+            CollisionLayers::none()
+                .with_group(Layer::Player)
+                .with_mask(Layer::Enemies)
+                .with_mask(Layer::World),
+        );
 }
