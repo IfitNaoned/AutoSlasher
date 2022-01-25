@@ -6,7 +6,7 @@ use heron::prelude::*;
 use rand::prelude::*;
 
 static ENEMY_SIZE: isize = 1;
-const ENEMY_SPAWN_TIME_STEP: f64 = 120.0 / 60.0;
+const ENEMY_SPAWN_TIME_STEP: f64 = 30.0 / 60.0;
 pub static ENEMY_MAX_POSITION: isize = MAP_SIZE / 2;
 pub static ENEMY_MIN_POSITION: isize = -ENEMY_MAX_POSITION;
 
@@ -50,6 +50,14 @@ fn spawn(
                 transform: EnemyBundle::get_random_spawn_position(),
                 ..Default::default()
             },
+        })
+        .insert(Velocity {
+            ..Default::default()
+        })
+        .insert(PhysicMaterial {
+            restitution: 0.,
+            friction: 0.0,
+            density: 1.0,
         })
         .insert(RigidBody::Dynamic)
         .insert(CollisionShape::Sphere {

@@ -77,7 +77,15 @@ fn spawn(
                 ..Default::default()
             },
         })
-        .insert(Velocity::default())
+        .insert(Velocity {
+            ..Default::default()
+        })
+        .insert(RotationConstraints::lock())
+        .insert(PhysicMaterial {
+            restitution: 0.,
+            friction: 0.0,
+            density: 1000.0,
+        })
         .insert(RigidBody::Dynamic)
         .insert(CollisionShape::Cuboid {
             half_extends: Vec3::splat(PLAYER_COLLISION_SIZE),
