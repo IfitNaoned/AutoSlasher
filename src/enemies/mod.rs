@@ -11,6 +11,7 @@ const ENEMY_SPAWN_TIME_STEP: f64 = 30.0 / 60.0;
 pub static ENEMY_MAX_POSITION: isize = (MAP_SIZE / 2) - ENEMY_SIZE;
 pub static ENEMY_MIN_POSITION: isize = -ENEMY_MAX_POSITION;
 
+pub mod health;
 pub mod movement;
 
 #[derive(Component)]

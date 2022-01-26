@@ -5,7 +5,7 @@ use rand::{
     Rng,
 };
 
-const ATTACKS_RATE_TIME: f64 = 180.0 / 60.0;
+const ATTACKS_RATE_TIME: f64 = 30.0 / 60.0;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Component, Copy)]
 enum AttackType {

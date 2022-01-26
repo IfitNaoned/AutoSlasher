@@ -35,6 +35,7 @@ fn main() {
         .add_plugin(player::attacks::Plugin)
         .add_plugin(enemies::Plugin)
         .add_plugin(enemies::movement::Plugin)
+        .add_plugin(enemies::health::Plugin)
         .add_plugin(map::Plugin)
         .run();
 }
