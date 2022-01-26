@@ -9,6 +9,7 @@ static PLAYER_SIZE: isize = 1;
 static PLAYER_COLLISION_SIZE: f32 = PLAYER_SIZE as f32 / 2.;
 pub static PLAYER_SPEED: f32 = 10.;
 
+pub mod health;
 pub mod movement;
 
 #[derive(Actionlike, PartialEq, Eq, Clone, Copy, Hash, Debug, EnumIter)]
@@ -21,7 +22,7 @@ pub enum Action {
 }
 
 #[derive(Component)]
-struct LifePoint(u32);
+struct Health(i32);
 
 #[derive(Component)]
 pub struct Player;
@@ -29,7 +30,7 @@ pub struct Player;
 #[derive(Bundle)]
 struct PlayerBundle {
     player: Player,
-    life: LifePoint,
+    life: Health,
     #[bundle]
     input_manager: InputManagerBundle<Action>,
     #[bundle]
@@ -64,7 +65,7 @@ fn spawn(
     commands
         .spawn_bundle(PlayerBundle {
             player: Player,
-            life: LifePoint(100),
+            life: Health(100),
             input_manager: InputManagerBundle {
                 input_map: PlayerBundle::default_input_map(),
                 action_state: ActionState::default(),
