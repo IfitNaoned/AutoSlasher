@@ -5,4 +5,5 @@ pub enum Layer {
     World,
     Player,
     Enemies,
+    PlayerAttacks,
 }

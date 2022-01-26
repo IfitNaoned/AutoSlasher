@@ -9,6 +9,7 @@ static PLAYER_SIZE: isize = 1;
 static PLAYER_COLLISION_SIZE: f32 = PLAYER_SIZE as f32 / 2.;
 pub static PLAYER_SPEED: f32 = 10.;
 
+pub mod attacks;
 pub mod health;
 pub mod movement;
 
