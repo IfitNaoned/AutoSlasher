@@ -1,4 +1,5 @@
 use crate::game_state::*;
+use crate::map::collision::*;
 use crate::map::*;
 use crate::physics::*;
 use bevy::core::FixedTimestep;
@@ -71,7 +72,8 @@ fn spawn(
                 .with_mask(Layer::Enemies)
                 .with_mask(Layer::Player)
                 .with_mask(Layer::World),
-        );
+        )
+        .insert(DespawnOutOfBounds);
 }
 
 impl EnemyBundle {

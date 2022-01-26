@@ -1,3 +1,4 @@
+use crate::map::collision::*;
 use crate::{map::MAP_SIZE, player::*};
 use bevy::core::FixedTimestep;
 use rand::{
@@ -81,7 +82,8 @@ fn attacks(
                             .with_group(Layer::Player)
                             .with_mask(Layer::Enemies)
                             .with_mask(Layer::World),
-                    );
+                    )
+                    .insert(DespawnOutOfBounds);
             }
             AttackType::Fireball => {
                 commands
@@ -109,7 +111,8 @@ fn attacks(
                             .with_group(Layer::Player)
                             .with_mask(Layer::Enemies)
                             .with_mask(Layer::World),
-                    );
+                    )
+                    .insert(DespawnOutOfBounds);
             }
         }
     }

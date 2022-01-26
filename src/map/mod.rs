@@ -3,6 +3,8 @@ use crate::physics::*;
 use bevy::prelude::*;
 use heron::prelude::*;
 
+pub mod collision;
+
 pub static MAP_SIZE: isize = 100;
 pub static BORDER_SIZE: isize = 2;
 
