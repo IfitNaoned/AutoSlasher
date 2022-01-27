@@ -6,7 +6,7 @@ use heron::prelude::*;
 pub mod collision;
 
 pub static MAP_SIZE: isize = 100;
-pub static BORDER_SIZE: isize = 2;
+pub static BORDER_SIZE: isize = 1;
 
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
@@ -58,14 +58,14 @@ fn create_map(
             material: materials.add(Color::GREEN.into()),
             transform: Transform::from_translation(Vec3::new(
                 0.,
-                (BORDER_SIZE / 2) as f32,
-                -(MAP_SIZE / 2) as f32,
+                BORDER_SIZE as f32 / 2.,
+                -(MAP_SIZE as f32 / 2.),
             )),
             ..PbrBundle::default()
         })
         .insert(RigidBody::Static)
         .insert(CollisionShape::Cuboid {
-            half_extends: Vec3::new((MAP_SIZE / 2) as f32, BORDER_SIZE as f32, 0.),
+            half_extends: Vec3::new(MAP_SIZE as f32 / 2., BORDER_SIZE as f32 / 2., 0.),
             border_radius: None,
         })
         .insert(
@@ -88,14 +88,14 @@ fn create_map(
             material: materials.add(Color::GREEN.into()),
             transform: Transform::from_translation(Vec3::new(
                 0.,
-                (BORDER_SIZE / 2) as f32,
-                (MAP_SIZE / 2) as f32,
+                BORDER_SIZE as f32 / 2.,
+                MAP_SIZE as f32 / 2.,
             )),
             ..PbrBundle::default()
         })
         .insert(RigidBody::Static)
         .insert(CollisionShape::Cuboid {
-            half_extends: Vec3::new((MAP_SIZE / 2) as f32, BORDER_SIZE as f32, 0.),
+            half_extends: Vec3::new(MAP_SIZE as f32 / 2., BORDER_SIZE as f32 / 2., 0.),
             border_radius: None,
         })
         .insert(
@@ -117,7 +117,7 @@ fn create_map(
             ),
             material: materials.add(Color::GREEN.into()),
             transform: Transform {
-                translation: Vec3::new(-(MAP_SIZE / 2) as f32, (BORDER_SIZE / 2) as f32, 0.),
+                translation: Vec3::new(-(MAP_SIZE as f32 / 2.), BORDER_SIZE as f32 / 2., 0.),
                 rotation: Quat::from_rotation_y(std::f32::consts::PI / 2.),
                 ..Default::default()
             },
@@ -125,7 +125,7 @@ fn create_map(
         })
         .insert(RigidBody::Static)
         .insert(CollisionShape::Cuboid {
-            half_extends: Vec3::new((MAP_SIZE / 2) as f32, BORDER_SIZE as f32, 0.),
+            half_extends: Vec3::new(MAP_SIZE as f32 / 2., BORDER_SIZE as f32 / 2., 0.),
             border_radius: None,
         })
         .insert(
@@ -147,7 +147,7 @@ fn create_map(
             ),
             material: materials.add(Color::GREEN.into()),
             transform: Transform {
-                translation: Vec3::new((MAP_SIZE / 2) as f32, (BORDER_SIZE / 2) as f32, 0.),
+                translation: Vec3::new(MAP_SIZE as f32 / 2., BORDER_SIZE as f32 / 2., 0.),
                 rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.),
                 ..Default::default()
             },
@@ -155,7 +155,7 @@ fn create_map(
         })
         .insert(RigidBody::Static)
         .insert(CollisionShape::Cuboid {
-            half_extends: Vec3::new((MAP_SIZE / 2) as f32, BORDER_SIZE as f32, 0.),
+            half_extends: Vec3::new(MAP_SIZE as f32 / 2., BORDER_SIZE as f32 / 2., 0.),
             border_radius: None,
         })
         .insert(

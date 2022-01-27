@@ -49,7 +49,9 @@ fn touch_by_enemy(
 }
 
 fn is_player(layers: CollisionLayers) -> bool {
-    layers.contains_group(Layer::Player) && !layers.contains_group(Layer::Enemies)
+    layers.contains_group(Layer::Player)
+        && !layers.contains_group(Layer::Enemies)
+        && !layers.contains_group(Layer::PlayerAttacks)
 }
 
 fn is_enemy(layers: CollisionLayers) -> bool {

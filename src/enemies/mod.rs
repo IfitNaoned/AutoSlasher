@@ -18,6 +18,9 @@ pub mod movement;
 #[derive(Component)]
 pub struct Enemy;
 
+#[derive(Component)]
+pub struct DespawnEnemy;
+
 #[derive(Bundle)]
 struct EnemyBundle {
     enemy: Enemy,
@@ -32,7 +35,14 @@ impl bevy::prelude::Plugin for Plugin {
             SystemSet::on_update(GameState::Play)
                 .with_run_criteria(FixedTimestep::step(ENEMY_SPAWN_TIME_STEP))
                 .with_system(spawn),
-        );
+        )
+        .add_system_set(SystemSet::on_update(GameState::Play).with_system(despawn_enemies));
+    }
+}
+
+fn despawn_enemies(mut commands: Commands, query: Query<Entity, With<DespawnEnemy>>) {
+    for entity in query.iter() {
+        commands.entity(entity).despawn();
     }
 }
 
@@ -46,7 +56,7 @@ fn spawn(
             enemy: Enemy,
             pbr: PbrBundle {
                 mesh: meshes.add(Mesh::from(shape::Icosphere {
-                    radius: ENEMY_SIZE as f32,
+                    radius: ENEMY_SIZE as f32 / 2.,
                     subdivisions: 48,
                 })),
                 material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
@@ -64,7 +74,7 @@ fn spawn(
         })
         .insert(RigidBody::Dynamic)
         .insert(CollisionShape::Sphere {
-            radius: ENEMY_SIZE as f32,
+            radius: ENEMY_SIZE as f32 / 2.,
         })
         .insert(
             CollisionLayers::none()

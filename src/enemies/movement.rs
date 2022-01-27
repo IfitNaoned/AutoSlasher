@@ -18,6 +18,7 @@ fn movement(
     if let Ok(player_transform) = query_player.get_single() {
         enemies.for_each_mut(|(mut enemy_velocity, enemy_transform)| {
             let d = player_transform.translation - enemy_transform.translation;
+
             enemy_velocity.linear = d.normalize_or_zero() * ENEMY_SPEED;
         });
     }
