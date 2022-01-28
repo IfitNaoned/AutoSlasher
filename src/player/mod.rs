@@ -3,7 +3,7 @@ use crate::physics::*;
 use bevy::prelude::*;
 use heron::prelude::*;
 use leafwing_input_manager::prelude::*;
-use strum_macros::*;
+use strum::EnumIter;
 
 static PLAYER_SIZE: isize = 1;
 static PLAYER_COLLISION_SIZE: f32 = PLAYER_SIZE as f32 / 2.;

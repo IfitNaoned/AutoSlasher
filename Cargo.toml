@@ -8,11 +8,14 @@ edition = "2021"
 [dependencies]
 bevy = "0.6"
 petitset = "0.1.0"
-strum = "0.23"
-strum_macros = "0.23"
-leafwing-input-manager= { git = "https://github.com/Leafwing-Studios/leafwing-input-manager" } 
+strum = {version = "0.23", features = ["derive"]}
+leafwing-input-manager = "0.1.2"
 rand = "0.8.4"
 heron = { version = "1.0.1", features = ["3d"] }
+
+#leafwing-input-manager= { git = "https://github.com/Leafwing-Studios/leafwing-input-manager" } 
+#strum = "0.23"
+#strum_macros = "0.23"
 
 #plugins not ready for 0.6
 #bevy_config_cam= { git = "https://github.com/BlackPhlox/bevy_config_cam", branch = "0.6" } 
