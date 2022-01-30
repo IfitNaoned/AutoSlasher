@@ -36,7 +36,11 @@ impl bevy::prelude::Plugin for Plugin {
                 .with_run_criteria(FixedTimestep::step(ENEMY_SPAWN_TIME_STEP))
                 .with_system(spawn),
         )
-        .add_system_set(SystemSet::on_update(GameState::Play).with_system(despawn_killed_enemies))
+        .add_system_set(
+            SystemSet::on_update(GameState::Play)
+                .with_system(despawn_killed_enemies)
+                .after("kill_enemy"),
+        )
         .add_system_set(SystemSet::on_exit(GameState::Play).with_system(despawn_entities::<Enemy>));
     }
 }

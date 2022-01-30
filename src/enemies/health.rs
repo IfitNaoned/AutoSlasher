@@ -6,8 +6,12 @@ struct EnemyDieEvent();
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(SystemSet::on_update(GameState::Play).with_system(kill_enemy))
-            .add_event::<EnemyDieEvent>();
+        app.add_system_set(
+            SystemSet::on_update(GameState::Play)
+                .with_system(kill_enemy)
+                .label("kill_enemy"),
+        )
+        .add_event::<EnemyDieEvent>();
     }
 }
 
