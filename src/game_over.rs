@@ -1,8 +1,6 @@
 use crate::{
-    enemies::Enemy,
     game_state::*,
     ui::{score::ScoreEvent, GameTimer},
-    utils::despawn_entities,
 };
 use bevy::prelude::*;
 
