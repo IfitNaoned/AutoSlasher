@@ -2,27 +2,46 @@ use super::*;
 use crate::utils::*;
 use bevy::app::AppExit;
 
+pub struct ScoreEvent(pub String);
+
 #[derive(Component)]
-struct OnMainMenuScreen;
+struct OnScoreScreen;
+
+#[derive(Component)]
+struct GameOverText;
 
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(SystemSet::on_enter(GameState::Menu).with_system(main_menu_setup))
+        app.add_system_set(SystemSet::on_enter(GameState::GameOver).with_system(score_menu))
             .add_system_set(
-                SystemSet::on_update(GameState::Menu)
-                    .with_system(menu_action)
+                SystemSet::on_update(GameState::GameOver)
+                    .with_system(score_menu_action)
                     .with_system(button_system),
             )
+            .add_system_set(SystemSet::on_update(GameState::GameOver).with_system(score))
             .add_system_set(
-                SystemSet::on_exit(GameState::Menu)
-                    .with_system(despawn_entities::<OnMainMenuScreen>),
-            );
+                SystemSet::on_exit(GameState::GameOver)
+                    .with_system(despawn_entities::<OnScoreScreen>),
+            )
+            .add_event::<ScoreEvent>();
+    }
+}
+
+fn score(mut events: EventReader<ScoreEvent>, mut query: Query<&mut Text, With<GameOverText>>) {
+    for event in events.iter() {
+        match event {
+            ScoreEvent(score_text) => {
+                for mut text in query.iter_mut() {
+                    text.sections[0].value = score_text.clone();
+                }
+            }
+        }
     }
 }
 
 #[allow(clippy::all)]
-fn menu_action(
+fn score_menu_action(
     interaction_query: Query<
         (&Interaction, &MenuButtonAction),
         (Changed<Interaction>, With<Button>),
@@ -42,7 +61,7 @@ fn menu_action(
     }
 }
 
-fn main_menu_setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+fn score_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
     let font = asset_server.load("fonts/FiraSans-Bold.ttf");
     // Common style for all buttons on the screen
     let button_style = Style {
@@ -82,25 +101,27 @@ fn main_menu_setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             color: Color::DARK_GRAY.into(),
             ..Default::default()
         })
-        .insert(OnMainMenuScreen)
+        .insert(OnScoreScreen)
         .with_children(|parent| {
             // Display the game name
-            parent.spawn_bundle(TextBundle {
-                style: Style {
-                    margin: Rect::all(Val::Px(50.0)),
-                    ..Default::default()
-                },
-                text: Text::with_section(
-                    "AutoSlasher",
-                    TextStyle {
-                        font: font.clone(),
-                        font_size: 80.0,
-                        color: TEXT_COLOR,
+            parent
+                .spawn_bundle(TextBundle {
+                    style: Style {
+                        margin: Rect::all(Val::Px(50.0)),
+                        ..Default::default()
                     },
-                    Default::default(),
-                ),
-                ..Default::default()
-            });
+                    text: Text::with_section(
+                        "",
+                        TextStyle {
+                            font: font.clone(),
+                            font_size: 80.0,
+                            color: TEXT_COLOR,
+                        },
+                        Default::default(),
+                    ),
+                    ..Default::default()
+                })
+                .insert(GameOverText);
 
             parent
                 .spawn_bundle(ButtonBundle {

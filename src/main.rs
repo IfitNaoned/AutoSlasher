@@ -3,13 +3,14 @@ use bevy::prelude::*;
 use heron::prelude::*;
 
 mod camera;
-mod end_game;
 mod enemies;
+mod game_over;
 mod game_state;
 mod map;
 mod physics;
 mod player;
 mod ui;
+mod utils;
 
 fn main() {
     App::new()
@@ -27,10 +28,11 @@ fn main() {
         .insert_resource(Gravity::from(Vec3::new(0.0, -9.81, 0.0)))
         // Game plugins
         .add_plugin(camera::Plugin)
+        .add_plugin(game_over::Plugin)
         .add_plugin(ui::Plugin)
         .add_plugin(ui::menu::Plugin)
         .add_plugin(ui::hud::Plugin)
-        .add_plugin(end_game::Plugin)
+        .add_plugin(ui::score::Plugin)
         .add_plugin(enemies::Plugin)
         .add_plugin(enemies::movement::Plugin)
         .add_plugin(enemies::health::Plugin)

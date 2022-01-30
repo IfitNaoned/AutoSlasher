@@ -2,6 +2,7 @@ use crate::game_state::*;
 use crate::map::collision::*;
 use crate::map::*;
 use crate::physics::*;
+use crate::utils::*;
 use bevy::core::FixedTimestep;
 use bevy::prelude::*;
 use heron::prelude::*;
@@ -23,7 +24,6 @@ pub struct DespawnEnemy;
 
 #[derive(Bundle)]
 struct EnemyBundle {
-    enemy: Enemy,
     #[bundle]
     pbr: PbrBundle,
 }
@@ -36,11 +36,12 @@ impl bevy::prelude::Plugin for Plugin {
                 .with_run_criteria(FixedTimestep::step(ENEMY_SPAWN_TIME_STEP))
                 .with_system(spawn),
         )
-        .add_system_set(SystemSet::on_update(GameState::Play).with_system(despawn_enemies));
+        .add_system_set(SystemSet::on_update(GameState::Play).with_system(despawn_killed_enemies))
+        .add_system_set(SystemSet::on_exit(GameState::Play).with_system(despawn_entities::<Enemy>));
     }
 }
 
-fn despawn_enemies(mut commands: Commands, query: Query<Entity, With<DespawnEnemy>>) {
+fn despawn_killed_enemies(mut commands: Commands, query: Query<Entity, With<DespawnEnemy>>) {
     for entity in query.iter() {
         commands.entity(entity).despawn();
     }
@@ -53,7 +54,6 @@ fn spawn(
 ) {
     commands
         .spawn_bundle(EnemyBundle {
-            enemy: Enemy,
             pbr: PbrBundle {
                 mesh: meshes.add(Mesh::from(shape::Icosphere {
                     radius: ENEMY_SIZE as f32 / 2.,
@@ -64,6 +64,7 @@ fn spawn(
                 ..Default::default()
             },
         })
+        .insert(Enemy)
         .insert(Velocity {
             ..Default::default()
         })

@@ -1,5 +1,6 @@
 use crate::game_state::*;
 use crate::physics::*;
+use crate::utils::*;
 use bevy::prelude::*;
 use heron::prelude::*;
 use leafwing_input_manager::prelude::*;
@@ -8,6 +9,7 @@ use strum::EnumIter;
 static PLAYER_SIZE: isize = 1;
 static PLAYER_COLLISION_SIZE: f32 = PLAYER_SIZE as f32 / 2.;
 pub static PLAYER_SPEED: f32 = 10.;
+static PLAYER_HEALTH_MAX: i32 = 100;
 
 pub mod attacks;
 pub mod health;
@@ -30,8 +32,6 @@ pub struct Player;
 
 #[derive(Bundle)]
 struct PlayerBundle {
-    player: Player,
-    life: Health,
     #[bundle]
     input_manager: InputManagerBundle<Action>,
     #[bundle]
@@ -41,7 +41,10 @@ struct PlayerBundle {
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(spawn_player));
+        app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(spawn_player))
+            .add_system_set(
+                SystemSet::on_exit(GameState::Play).with_system(despawn_entities::<Player>),
+            );
     }
 }
 
@@ -65,8 +68,6 @@ fn spawn_player(
 ) {
     commands
         .spawn_bundle(PlayerBundle {
-            player: Player,
-            life: Health(100),
             input_manager: InputManagerBundle {
                 input_map: PlayerBundle::default_input_map(),
                 action_state: ActionState::default(),
@@ -80,6 +81,8 @@ fn spawn_player(
                 ..Default::default()
             },
         })
+        .insert(Player)
+        .insert(Health(PLAYER_HEALTH_MAX))
         .insert(Velocity {
             ..Default::default()
         })

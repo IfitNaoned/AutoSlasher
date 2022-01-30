@@ -1,5 +1,6 @@
 use crate::game_state::*;
 use crate::physics::*;
+use crate::utils::despawn_entities;
 use bevy::prelude::*;
 use heron::prelude::*;
 
@@ -7,11 +8,16 @@ pub mod collision;
 
 pub static MAP_SIZE: isize = 100;
 pub static BORDER_SIZE: isize = 1;
+#[derive(Component)]
+pub struct Map;
 
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(create_map));
+        app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(create_map))
+            .add_system_set(
+                SystemSet::on_exit(GameState::Play).with_system(despawn_entities::<Map>),
+            );
     }
 }
 
@@ -33,6 +39,7 @@ fn create_map(
             transform: Transform::from_translation(Vec3::new(0., 0., 0.)),
             ..PbrBundle::default()
         })
+        .insert(Map)
         .insert(RigidBody::Static)
         .insert(CollisionShape::HeightField {
             size: Vec2::new(MAP_SIZE as f32, MAP_SIZE as f32),
@@ -63,6 +70,7 @@ fn create_map(
             )),
             ..PbrBundle::default()
         })
+        .insert(Map)
         .insert(RigidBody::Static)
         .insert(CollisionShape::Cuboid {
             half_extends: Vec3::new(MAP_SIZE as f32 / 2., BORDER_SIZE as f32 / 2., 0.),
@@ -93,6 +101,7 @@ fn create_map(
             )),
             ..PbrBundle::default()
         })
+        .insert(Map)
         .insert(RigidBody::Static)
         .insert(CollisionShape::Cuboid {
             half_extends: Vec3::new(MAP_SIZE as f32 / 2., BORDER_SIZE as f32 / 2., 0.),
@@ -123,6 +132,7 @@ fn create_map(
             },
             ..PbrBundle::default()
         })
+        .insert(Map)
         .insert(RigidBody::Static)
         .insert(CollisionShape::Cuboid {
             half_extends: Vec3::new(MAP_SIZE as f32 / 2., BORDER_SIZE as f32 / 2., 0.),
@@ -153,6 +163,7 @@ fn create_map(
             },
             ..PbrBundle::default()
         })
+        .insert(Map)
         .insert(RigidBody::Static)
         .insert(CollisionShape::Cuboid {
             half_extends: Vec3::new(MAP_SIZE as f32 / 2., BORDER_SIZE as f32 / 2., 0.),

@@ -1,4 +1,4 @@
-use crate::end_game::*;
+use crate::game_over::*;
 use crate::player::*;
 struct PlayerHealthEvent(i32);
 
@@ -14,7 +14,7 @@ impl bevy::prelude::Plugin for Plugin {
 fn update_health(
     mut events: EventReader<PlayerHealthEvent>,
     mut query: Query<&mut Health, With<Player>>,
-    mut end_game_event: EventWriter<EndGameEvent>,
+    mut end_game_event: EventWriter<PlayerDeadEvent>,
 ) {
     for event in events.iter() {
         match event {
@@ -22,7 +22,7 @@ fn update_health(
                 let mut player_health = query.single_mut();
                 player_health.0 += health;
                 if player_health.0 < 1 {
-                    end_game_event.send(EndGameEvent(false));
+                    end_game_event.send(PlayerDeadEvent());
                 }
             }
         }

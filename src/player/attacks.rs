@@ -44,7 +44,10 @@ impl bevy::prelude::Plugin for Plugin {
                 .with_run_criteria(FixedTimestep::step(ATTACKS_RATE_TIME))
                 .with_system(attacks),
         )
-        .add_system_set(SystemSet::on_update(GameState::Play).with_system(despawn_attacks));
+        .add_system_set(SystemSet::on_update(GameState::Play).with_system(despawn_attacks))
+        .add_system_set(
+            SystemSet::on_exit(GameState::Play).with_system(despawn_entities::<Attack>),
+        );
     }
 }
 
