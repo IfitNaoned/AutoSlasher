@@ -41,7 +41,7 @@ struct PlayerBundle {
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(spawn));
+        app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(spawn_player));
     }
 }
 
@@ -58,7 +58,7 @@ impl PlayerBundle {
     }
 }
 
-fn spawn(
+fn spawn_player(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,

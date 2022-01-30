@@ -18,7 +18,7 @@ struct MainCameraBundle {
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(setup_camera))
+        app.add_system_set(SystemSet::on_enter(GameState::Play).with_system(setup_camera))
             .add_system_set(SystemSet::on_update(GameState::Play).with_system(track_player))
             .add_system_set(SystemSet::on_update(GameState::Play).with_system(update_camera))
             .add_event::<PlayerCameraEvent>();
