@@ -16,7 +16,7 @@ enum MenuButtonAction {
 }
 
 #[derive(Default)]
-pub struct GameTimer(f32);
+pub struct GameTimer(pub f32);
 
 const TEXT_COLOR: Color = Color::rgb(0.9, 0.9, 0.9);
 const NORMAL_BUTTON: Color = Color::rgb(0.15, 0.15, 0.15);
