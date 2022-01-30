@@ -4,7 +4,7 @@ use crate::{
 };
 use bevy::prelude::*;
 
-pub const WIN_TIMER_IN_SECONDS: f32 = 0.1 * 60.;
+pub const WIN_TIMER_IN_SECONDS: f32 = 1. * 60.;
 
 pub struct PlayerDeadEvent();
 pub struct GameTimerEndedEvent();

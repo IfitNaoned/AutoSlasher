@@ -32,7 +32,7 @@ pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_system_set(
-            SystemSet::on_update(GameState::Play)
+            SystemSet::new()
                 .with_run_criteria(FixedTimestep::step(ENEMY_SPAWN_TIME_STEP))
                 .with_system(spawn),
         )
@@ -49,9 +49,14 @@ fn despawn_killed_enemies(mut commands: Commands, query: Query<Entity, With<Desp
 
 fn spawn(
     mut commands: Commands,
+    state: Res<State<GameState>>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
+    if *state.current() != GameState::Play {
+        return;
+    }
+
     commands
         .spawn_bundle(EnemyBundle {
             pbr: PbrBundle {
