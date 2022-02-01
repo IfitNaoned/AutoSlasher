@@ -63,6 +63,6 @@ fn game_timer(
     game_timer.0 += time.delta_seconds();
 
     if game_timer.0 > WIN_TIMER_IN_SECONDS {
-        end_game_event.send(GameTimerEndedEvent());
+        end_game_event.send(GameTimerEndedEvent);
     }
 }

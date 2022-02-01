@@ -22,7 +22,7 @@ fn update_health(
                 let mut player_health = query.single_mut();
                 player_health.0 += health;
                 if player_health.0 < 1 {
-                    end_game_event.send(PlayerDeadEvent());
+                    end_game_event.send(PlayerDeadEvent);
                 }
             }
         }
@@ -31,7 +31,7 @@ fn update_health(
 
 fn touch_by_enemy(
     mut events: EventReader<CollisionEvent>,
-    mut loose_health_events: EventWriter<PlayerHealthEvent>,
+    mut lose_health_events: EventWriter<PlayerHealthEvent>,
 ) {
     let mut hit_counter = 0;
 
@@ -45,7 +45,7 @@ fn touch_by_enemy(
         })
         .for_each(|_| hit_counter += 1);
 
-    loose_health_events.send(PlayerHealthEvent(-hit_counter));
+    lose_health_events.send(PlayerHealthEvent(-hit_counter));
 }
 
 fn is_player(layers: CollisionLayers) -> bool {

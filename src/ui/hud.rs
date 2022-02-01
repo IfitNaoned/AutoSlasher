@@ -103,7 +103,7 @@ fn spawn_ui(mut commands: Commands, asset_server: Res<AssetServer>) {
                                 },
                             },
                             TextSection {
-                                value: "secondes".to_string(),
+                                value: "seconds".to_string(),
                                 style: TextStyle {
                                     font: font.clone(),
                                     font_size: 30.0,
