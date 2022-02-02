@@ -96,21 +96,21 @@ fn attacks(
                             ..Default::default()
                         },
                     })
-                    .insert(Velocity {
-                        linear: attack_direction,
-                        ..Default::default()
-                    })
-                    .insert(RigidBody::KinematicVelocityBased)
-                    .insert(CollisionShape::Sphere {
-                        radius: get_attack_size(attack_type) / 2.,
-                    })
-                    .insert(
+                    .insert_bundle((
+                        Velocity {
+                            linear: attack_direction,
+                            ..Default::default()
+                        },
+                        RigidBody::KinematicVelocityBased,
+                        CollisionShape::Sphere {
+                            radius: get_attack_size(attack_type) / 2.,
+                        },
                         CollisionLayers::none()
                             .with_groups([Layer::PlayerAttacks, Layer::Player])
                             .with_masks([Layer::Enemies, Layer::World]),
-                    )
-                    .insert(Attack)
-                    .insert(DespawnOutOfBounds);
+                        Attack,
+                        DespawnOutOfBounds,
+                    ));
             }
             AttackType::Fireball => {
                 commands
@@ -126,21 +126,21 @@ fn attacks(
                             ..Default::default()
                         },
                     })
-                    .insert(Velocity {
-                        linear: attack_direction,
-                        ..Default::default()
-                    })
-                    .insert(RigidBody::KinematicVelocityBased)
-                    .insert(CollisionShape::Sphere {
-                        radius: get_attack_size(attack_type) / 2.,
-                    })
-                    .insert(
+                    .insert_bundle((
+                        Velocity {
+                            linear: attack_direction,
+                            ..Default::default()
+                        },
+                        RigidBody::KinematicVelocityBased,
+                        CollisionShape::Sphere {
+                            radius: get_attack_size(attack_type) / 2.,
+                        },
                         CollisionLayers::none()
                             .with_groups([Layer::PlayerAttacks, Layer::Player])
                             .with_masks([Layer::Enemies, Layer::World]),
-                    )
-                    .insert(Attack)
-                    .insert(DespawnOutOfBounds);
+                        Attack,
+                        DespawnOutOfBounds,
+                    ));
             }
         }
     }

@@ -6,8 +6,8 @@ use heron::prelude::*;
 use leafwing_input_manager::prelude::*;
 use strum::EnumIter;
 
-static PLAYER_SIZE: isize = 1;
-static PLAYER_COLLISION_SIZE: f32 = PLAYER_SIZE as f32 / 2.;
+static PLAYER_SIZE: f32 = 1.0;
+static PLAYER_COLLISION_SIZE: f32 = PLAYER_SIZE / 2.;
 pub static PLAYER_SPEED: f32 = 10.;
 static PLAYER_HEALTH_MAX: i32 = 100;
 
@@ -74,33 +74,31 @@ fn spawn_player(
             },
             pbr: PbrBundle {
                 mesh: meshes.add(Mesh::from(shape::Cube {
-                    size: PLAYER_SIZE as f32,
+                    size: PLAYER_SIZE,
                 })),
                 material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-                transform: Transform::from_xyz(0., PLAYER_SIZE as f32 / 2., 0.),
+                transform: Transform::from_xyz(0., PLAYER_SIZE / 2., 0.),
                 ..Default::default()
             },
         })
-        .insert(Player)
-        .insert(Health(PLAYER_HEALTH_MAX))
-        .insert(Velocity {
-            ..Default::default()
-        })
-        .insert(RotationConstraints::lock())
-        .insert(PhysicMaterial {
-            restitution: 0.,
-            friction: 0.0,
-            density: 1000.0,
-        })
-        .insert(RigidBody::Dynamic)
-        .insert(CollisionShape::Cuboid {
-            half_extends: Vec3::splat(PLAYER_COLLISION_SIZE),
-            border_radius: None,
-        })
-        .insert(
+        .insert_bundle((
+            Player,
+            Health(PLAYER_HEALTH_MAX),
+            Velocity::default(),
+            RotationConstraints::lock(),
+            PhysicMaterial {
+                restitution: 0.,
+                friction: 0.0,
+                density: 1000.0,
+            },
+            RigidBody::Dynamic,
+            CollisionShape::Cuboid {
+                half_extends: Vec3::splat(PLAYER_COLLISION_SIZE),
+                border_radius: None,
+            },
             CollisionLayers::none()
                 .with_group(Layer::Player)
                 .with_mask(Layer::Enemies)
                 .with_mask(Layer::World),
-        );
+        ));
 }

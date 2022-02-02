@@ -1,5 +1,12 @@
-use crate::game_over::*;
-use crate::player::*;
+use bevy::prelude::*;
+use heron::prelude::*;
+
+use crate::{
+    game_over::PlayerDeadEvent,
+    physics::Layer,
+    player::{self, Player},
+    GameState,
+};
 struct PlayerHealthEvent(i32);
 
 pub struct Plugin;
@@ -13,18 +20,14 @@ impl bevy::prelude::Plugin for Plugin {
 
 fn update_health(
     mut events: EventReader<PlayerHealthEvent>,
-    mut query: Query<&mut Health, With<Player>>,
+    mut query: Query<&mut player::Health, With<Player>>,
     mut end_game_event: EventWriter<PlayerDeadEvent>,
 ) {
-    for event in events.iter() {
-        match event {
-            PlayerHealthEvent(health) => {
-                let mut player_health = query.single_mut();
-                player_health.0 += health;
-                if player_health.0 < 1 {
-                    end_game_event.send(PlayerDeadEvent);
-                }
-            }
+    for PlayerHealthEvent(health) in events.iter() {
+        let mut player_health = query.single_mut();
+        player_health.0 += health;
+        if player_health.0 < 1 {
+            end_game_event.send(PlayerDeadEvent);
         }
     }
 }

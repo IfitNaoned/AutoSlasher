@@ -10,7 +10,7 @@ impl bevy::prelude::Plugin for Plugin {
     }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::type_complexity)]
 fn movement(
     query_player: Query<&Transform, With<Player>>,
     mut enemies: Query<(&mut Velocity, &Transform), (With<Enemy>, Without<Player>)>,
