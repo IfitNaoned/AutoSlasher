@@ -12,16 +12,14 @@ struct MainCameraBundle {
     #[bundle]
     input_manager: InputManagerBundle<Action>,
     #[bundle]
-    pbr: PerspectiveCameraBundle,
+    perspective_camera: PerspectiveCameraBundle,
 }
 
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(setup_camera))
-            .add_system_set(SystemSet::on_update(GameState::Play).with_system(track_player))
-            .add_system_set(SystemSet::on_update(GameState::Play).with_system(update_camera))
-            .add_event::<PlayerCameraEvent>();
+            .add_system_set(SystemSet::on_update(GameState::Play).with_system(update_camera));
     }
 }
 
@@ -45,35 +43,20 @@ fn setup_camera(mut commands: Commands) {
             input_map: MainCameraBundle::default_input_map(),
             action_state: ActionState::default(),
         },
-        pbr: PerspectiveCameraBundle {
+        perspective_camera: PerspectiveCameraBundle {
             transform: Transform::from_xyz(0.0, 30.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
             ..Default::default()
         },
     });
 }
 
-struct PlayerCameraEvent(Vec3);
-
-fn track_player(
-    mut events: EventWriter<PlayerCameraEvent>,
-    query: Query<&Transform, With<Player>>,
-) {
-    let player_transform = query.single();
-    events.send(PlayerCameraEvent(player_transform.translation));
-}
-
 fn update_camera(
-    mut events: EventReader<PlayerCameraEvent>,
-    mut query: Query<&mut Transform, With<MainCamera>>,
+    mut camera: Query<&mut Transform, With<MainCamera>>,
+    player: Query<&Transform, Without<MainCamera>>,
 ) {
-    for event in events.iter() {
-        match event {
-            PlayerCameraEvent(translation) => {
-                if let Ok(mut transform) = query.get_single_mut() {
-                    transform.translation = *translation + Vec3::new(0.0, 30.0, 10.0);
-                    transform.look_at(*translation, Vec3::Y);
-                }
-            }
-        }
+    let tracked_position = player.single().translation;
+    if let Ok(mut transform) = camera.get_single_mut() {
+        transform.translation = tracked_position + Vec3::new(0.0, 30.0, 10.0);
+        transform.look_at(tracked_position, Vec3::Y);
     }
 }

@@ -12,11 +12,14 @@ pub struct GameTimerEndedEvent;
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(SystemSet::on_update(GameState::Play).with_system(lose))
-            .add_system_set(SystemSet::on_update(GameState::Play).with_system(win))
-            .add_system_set(SystemSet::on_enter(GameState::GameOver).with_system(reset_game_timer))
-            .add_event::<PlayerDeadEvent>()
-            .add_event::<GameTimerEndedEvent>();
+        app.add_system_set(
+            SystemSet::on_update(GameState::Play)
+                .with_system(lose)
+                .with_system(win),
+        )
+        .add_system_set(SystemSet::on_enter(GameState::GameOver).with_system(reset_game_timer))
+        .add_event::<PlayerDeadEvent>()
+        .add_event::<GameTimerEndedEvent>();
     }
 }
 
@@ -29,13 +32,9 @@ fn lose(
     mut state: ResMut<State<GameState>>,
     mut score_events: EventWriter<ScoreEvent>,
 ) {
-    for event in events.iter() {
-        match event {
-            PlayerDeadEvent => {
-                state.set(GameState::GameOver).unwrap();
-                score_events.send(ScoreEvent("You lose".to_string()));
-            }
-        }
+    for PlayerDeadEvent in events.iter() {
+        state.set(GameState::GameOver).unwrap();
+        score_events.send(ScoreEvent("You lose".to_string()));
     }
 }
 

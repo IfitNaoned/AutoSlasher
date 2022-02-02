@@ -21,7 +21,7 @@ impl bevy::prelude::Plugin for Plugin {
     }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::type_complexity)]
 fn menu_action(
     interaction_query: Query<
         (&Interaction, &MenuButtonAction),

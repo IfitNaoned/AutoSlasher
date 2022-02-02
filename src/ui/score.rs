@@ -29,18 +29,14 @@ impl bevy::prelude::Plugin for Plugin {
 }
 
 fn score(mut events: EventReader<ScoreEvent>, mut query: Query<&mut Text, With<GameOverText>>) {
-    for event in events.iter() {
-        match event {
-            ScoreEvent(score_text) => {
-                for mut text in query.iter_mut() {
-                    text.sections[0].value = score_text.clone();
-                }
-            }
+    for ScoreEvent(score_text) in events.iter() {
+        for mut text in query.iter_mut() {
+            text.sections[0].value = score_text.clone();
         }
     }
 }
 
-#[allow(clippy::all)]
+#[allow(clippy::type_complexity)]
 fn score_menu_action(
     interaction_query: Query<
         (&Interaction, &MenuButtonAction),
