@@ -23,7 +23,8 @@ impl bevy::prelude::Plugin for Plugin {
             .add_system_set(SystemSet::on_update(GameState::Play).with_system(update_camera))
             .add_system_set(
                 SystemSet::on_exit(GameState::Play).with_system(despawn_entities::<MainCamera>),
-            );
+            )
+            .add_event::<PlayerCameraEvent>();
     }
 }
 
