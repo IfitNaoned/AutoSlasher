@@ -52,7 +52,7 @@ fn setup_camera(mut commands: Commands) {
 
 fn update_camera(
     mut camera: Query<&mut Transform, With<MainCamera>>,
-    player: Query<&Transform, Without<MainCamera>>,
+    player: Query<&Transform, (With<Player>, Without<MainCamera>)>,
 ) {
     let tracked_position = player.single().translation;
     if let Ok(mut transform) = camera.get_single_mut() {
