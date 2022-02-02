@@ -1,5 +1,6 @@
 use crate::game_state::*;
 use crate::player::*;
+use crate::utils::despawn_entities;
 use bevy::prelude::*;
 use leafwing_input_manager::prelude::*;
 
@@ -19,7 +20,10 @@ pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_system_set(SystemSet::on_enter(GameState::Setup).with_system(setup_camera))
-            .add_system_set(SystemSet::on_update(GameState::Play).with_system(update_camera));
+            .add_system_set(SystemSet::on_update(GameState::Play).with_system(update_camera))
+            .add_system_set(
+                SystemSet::on_exit(GameState::Play).with_system(despawn_entities::<MainCamera>),
+            );
     }
 }
 
