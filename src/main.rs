@@ -30,17 +30,8 @@ fn main() {
         .add_plugin(camera::Plugin)
         .add_plugin(game_over::Plugin)
         .add_plugin(ui::Plugin)
-        .add_plugin(ui::menu::Plugin)
-        .add_plugin(ui::hud::Plugin)
-        .add_plugin(ui::score::Plugin)
         .add_plugin(enemies::Plugin)
-        .add_plugin(enemies::movement::Plugin)
-        .add_plugin(enemies::health::Plugin)
         .add_plugin(player::Plugin)
-        .add_plugin(player::movement::Plugin)
-        .add_plugin(player::attacks::Plugin)
-        .add_plugin(player::health::Plugin)
         .add_plugin(map::Plugin)
-        .add_plugin(map::collision::Plugin)
         .run();
 }

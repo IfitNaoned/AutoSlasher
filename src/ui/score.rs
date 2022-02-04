@@ -1,6 +1,9 @@
-use super::*;
+use super::menu::*;
+use super::ui::*;
+use crate::game_state::*;
 use crate::utils::*;
 use bevy::app::AppExit;
+use bevy::prelude::*;
 
 pub struct ScoreEvent(pub String);
 

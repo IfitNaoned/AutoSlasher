@@ -2,7 +2,6 @@ use crate::game_state::*;
 use crate::player::*;
 use crate::utils::despawn_entities;
 use bevy::prelude::*;
-use leafwing_input_manager::prelude::*;
 
 #[derive(Component)]
 pub struct MainCamera;
@@ -10,8 +9,8 @@ pub struct MainCamera;
 #[derive(Bundle)]
 struct MainCameraBundle {
     camera: MainCamera,
-    #[bundle]
-    input_manager: InputManagerBundle<Action>,
+    // #[bundle]
+    // input_manager: InputManagerBundle<Action>,
     #[bundle]
     perspective_camera: PerspectiveCameraBundle,
 }
@@ -27,26 +26,26 @@ impl bevy::prelude::Plugin for Plugin {
     }
 }
 
-impl MainCameraBundle {
-    fn default_input_map() -> InputMap<Action> {
-        use Action::*;
-        let mut input_map = InputMap::default();
-        // Movement
-        input_map.insert(Up, KeyCode::Up);
-        input_map.insert(Down, KeyCode::Down);
-        input_map.insert(Left, KeyCode::Left);
-        input_map.insert(Right, KeyCode::Right);
-        input_map
-    }
-}
+// impl MainCameraBundle {
+//     fn default_input_map() -> InputMap<Action> {
+//         use Action::*;
+//         let mut input_map = InputMap::default();
+//         // Movement
+//         input_map.insert(Up, KeyCode::Up);
+//         input_map.insert(Down, KeyCode::Down);
+//         input_map.insert(Left, KeyCode::Left);
+//         input_map.insert(Right, KeyCode::Right);
+//         input_map
+//     }
+// }
 
 fn setup_camera(mut commands: Commands) {
     commands.spawn_bundle(MainCameraBundle {
         camera: MainCamera,
-        input_manager: InputManagerBundle {
-            input_map: MainCameraBundle::default_input_map(),
-            action_state: ActionState::default(),
-        },
+        // input_manager: InputManagerBundle {
+        //     input_map: MainCameraBundle::default_input_map(),
+        //     action_state: ActionState::default(),
+        // },
         perspective_camera: PerspectiveCameraBundle {
             transform: Transform::from_xyz(0.0, 30.0, 10.0).looking_at(Vec3::ZERO, Vec3::Y),
             ..Default::default()

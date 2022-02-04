@@ -1,9 +1,17 @@
-use super::*;
+use super::ui::*;
+use crate::game_state::*;
 use crate::utils::*;
 use bevy::app::AppExit;
+use bevy::prelude::*;
 
 #[derive(Component)]
 struct OnMainMenuScreen;
+
+#[derive(Component)]
+pub enum MenuButtonAction {
+    Play,
+    Quit,
+}
 
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {

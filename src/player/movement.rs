@@ -1,4 +1,20 @@
-use crate::player::*;
+use super::player::*;
+use crate::game_state::*;
+use bevy::prelude::*;
+use heron::prelude::*;
+use leafwing_input_manager::prelude::*;
+use strum::EnumIter;
+
+pub static PLAYER_SPEED: f32 = 10.;
+
+#[derive(Actionlike, PartialEq, Eq, Clone, Copy, Hash, Debug, EnumIter)]
+pub enum Action {
+    // Movement
+    Up,
+    Down,
+    Left,
+    Right,
+}
 
 pub struct Plugin;
 impl bevy::prelude::Plugin for Plugin {

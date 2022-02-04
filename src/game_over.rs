@@ -1,7 +1,5 @@
-use crate::{
-    game_state::*,
-    ui::{score::ScoreEvent, GameTimer},
-};
+use crate::game_state::*;
+use crate::ui::*;
 use bevy::prelude::*;
 
 pub const WIN_TIMER_IN_SECONDS: f32 = 1. * 60.;
